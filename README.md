@@ -50,7 +50,15 @@ Operations: Inventory (`checkStock`, `reserveStock`, `listProducts`); Orders (`c
 
 ## Deployments
 
-The gateway runs at [https://microservice-audit-monitor-api.onrender.com](https://microservice-audit-monitor-api.onrender.com). The frontend runs at [https://monitorio-microservicios-frontend.vercel.app](https://monitorio-microservicios-frontend.vercel.app).
+The production dashboard and all four backend services are deployed:
+
+| Component | Production URL |
+|---|---|
+| Frontend dashboard | [https://monitorio-microservicios-frontend.vercel.app](https://monitorio-microservicios-frontend.vercel.app) |
+| API gateway and logging proxy | [https://microservice-audit-monitor-api.onrender.com](https://microservice-audit-monitor-api.onrender.com) |
+| Inventory | [https://inventory-service-lbkf.onrender.com](https://inventory-service-lbkf.onrender.com) |
+| Orders | [https://orders-service-2e9z.onrender.com](https://orders-service-2e9z.onrender.com) |
+| Payments | [https://payments-service-lw6j.onrender.com](https://payments-service-lw6j.onrender.com) |
 
 Deploy each service from this repository's `main` branch as a separate Render Docker web service. Use the repository root as Docker context and select these Dockerfiles:
 
@@ -63,7 +71,7 @@ Deploy each service from this repository's `main` branch as a separate Render Do
 
 Set `INTERNAL_API_TOKEN` to the same secret value on all four services. Set each gateway URL variable to its corresponding service's base URL, and set `ALLOWED_ORIGINS` on the gateway to the Vercel origin. Never commit the internal token. The gateway health endpoint is `/actuator/health`.
 
-The initial production deployment used Render for the gateway because the Railway account had reached its free-plan resource limit. Separate domain-service instances are required to complete this architecture; configure them using the table above before calling the production gateway. The in-memory audit log retains up to 5,000 entries and resets when the gateway restarts.
+The backend is hosted on Render because the Railway account had reached its free-plan resource limit. Each domain service runs as its own Render service, and the gateway's hand-written logging proxies call them over HTTP. Internal service endpoints require the shared secret configured in Render; it is not stored in this repository. The in-memory audit log retains up to 5,000 entries and resets when the gateway restarts.
 
 ## Tests
 

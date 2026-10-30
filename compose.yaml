@@ -1,0 +1,35 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: ["8080:8080"]
+    environment:
+      PORT: 8080
+      ALLOWED_ORIGINS: http://localhost:5173
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-local-development-token}
+      INVENTORY_SERVICE_URL: http://inventory:8081
+      ORDERS_SERVICE_URL: http://orders:8082
+      PAYMENTS_SERVICE_URL: http://payments:8083
+    depends_on: [inventory, orders, payments]
+  inventory:
+    build:
+      context: .
+      dockerfile: services/inventory/Dockerfile
+    environment:
+      PORT: 8081
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-local-development-token}
+  orders:
+    build:
+      context: .
+      dockerfile: services/orders/Dockerfile
+    environment:
+      PORT: 8082
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-local-development-token}
+  payments:
+    build:
+      context: .
+      dockerfile: services/payments/Dockerfile
+    environment:
+      PORT: 8083
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-local-development-token}

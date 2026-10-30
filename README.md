@@ -28,6 +28,8 @@ The gateway is available at `http://localhost:8080`; the three service container
 
 ## Public API
 
+The root URL (`/`) returns a small JSON service index, and `/actuator/health` reports health. Business and metrics operations are available through the endpoints below.
+
 Service requests accept an optional body of the form `{"params":[...]}`. Examples:
 
 ```bash

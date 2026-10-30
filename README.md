@@ -53,12 +53,13 @@ docker build -t proxy-monitor-api .
 
 Unit tests cover proxy success/error behavior, unique request IDs, deterministic payment failure injection, repository filtering/pagination, and service summaries.
 
-## Railway
+## Production deployment
 
-Connect this repository to a Railway service. Its root contains the multi-stage `Dockerfile`. Configure `ALLOWED_ORIGINS` with the Vercel frontend origin. Railway supplies `PORT`; the health check path is `/actuator/health`.
+This backend runs as a Docker web service on Render from the `main` branch. The multi-stage `Dockerfile` is at the repository root. Render supplies `PORT`; `/actuator/health` returns the readiness status. `ALLOWED_ORIGINS` includes the production Vercel origin and the local Vite origin.
 
 Backend repository: [monitorio-microservicios-BACKEND](https://github.com/samuelvallejo/monitorio-microservicios-BACKEND)  
 Frontend repository: [monitorio-microservicios-FRONTEND](https://github.com/samuelvallejo/monitorio-microservicios-FRONTEND)  
-Production URL: pending Railway deployment.
+Production API: [https://microservice-audit-monitor-api.onrender.com](https://microservice-audit-monitor-api.onrender.com)  
+Production health: [https://microservice-audit-monitor-api.onrender.com/actuator/health](https://microservice-audit-monitor-api.onrender.com/actuator/health)
 
 Logs are in memory, limited to the latest 5,000 events, and reset when the application restarts. The microservices are simulations; no external inventory, order, or payment provider is contacted.
